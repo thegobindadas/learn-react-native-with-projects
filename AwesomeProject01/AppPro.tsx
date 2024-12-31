@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 
 
-export default function AppPro() {
+export default function AppPro(): JSX.Element{
 
     const isDarkMode = useColorScheme() === 'dark';
 
