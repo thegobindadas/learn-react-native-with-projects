@@ -15,7 +15,7 @@ export default function App() {
   return (
     <SafeAreaView>
       <ScrollView>
-        <Text> Hello World ! </Text>
+        <FlatCards />
       </ScrollView>
     </SafeAreaView>
   )
