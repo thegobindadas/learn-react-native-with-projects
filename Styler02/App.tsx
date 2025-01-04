@@ -16,6 +16,7 @@ export default function App() {
     <SafeAreaView>
       <ScrollView>
         <FlatCards />
+        <ElevatedCards />
       </ScrollView>
     </SafeAreaView>
   )
