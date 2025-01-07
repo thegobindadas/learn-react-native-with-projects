@@ -9,6 +9,8 @@ import {
 
 const { width } = Dimensions.get('window');
 
+
+
 export default function FancyCard() {
     return (
         <View style={styles.container}>
@@ -33,6 +35,7 @@ export default function FancyCard() {
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
