@@ -10,10 +10,11 @@ import {
 
 
 function App(): React.JSX.Element {
-  
-  const [backgroundColor, setBackgroundColor] = useState("red");
+
+  const [backgroundColor, setBackgroundColor] = useState("#000000");
 
 
+  // Function to generate random hex color
   const generateColor = () => {
 
     const hexRange = "0123456789ABCDEF";
@@ -24,18 +25,21 @@ function App(): React.JSX.Element {
     }
 
     setBackgroundColor(hexColor);
-  }
+  };
+
 
   return (
     <>
-      <StatusBar backgroundColor={"#6A1B4D"} />
-      <View style={[styles.container, { backgroundColor }]}>
+      <StatusBar backgroundColor={backgroundColor} barStyle="light-content" />
+      <View
+        style={[styles.container, { backgroundColor: backgroundColor }]}
+      >
         <TouchableOpacity
-         onPress={generateColor}
+          onPress={generateColor}
+          style={styles.actionBtn}
+          activeOpacity={0.5}
         >
-          <View style={[styles.actionBtn]}>
-            <Text style={[styles.actionBtnTxt]}>Change Color</Text>
-          </View>
+          <Text style={styles.actionBtnTxt}>Change Color</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -44,22 +48,28 @@ function App(): React.JSX.Element {
 
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
+  container: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "center"
   },
   actionBtn: {
-    borderRadius: 12,
     backgroundColor: "#6A1B4D",
-    paddingVertical: 10,
-    paddingHorizontal: 40
+    paddingVertical: 12,
+    paddingHorizontal: 48,
+    borderRadius: 25,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
   },
   actionBtnTxt: {
-    fontSize: 24,
+    fontSize: 20,
+    fontWeight: "bold",
     color: "#FFFFFF",
-    textTransform: "uppercase"
-  }
+    textTransform: "uppercase",
+  },
 });
 
 
