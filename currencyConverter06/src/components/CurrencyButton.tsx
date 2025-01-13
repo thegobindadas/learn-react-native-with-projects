@@ -14,24 +14,25 @@ export default function CurrencyButton(props: CurrencyProps): JSX.Element {
     return (
         <View style={styles.buttonContainer}>
             <Text style={styles.flag}>{props.flag}</Text>
-            <Text style={styles.country}>{props.name}</Text>
+            <Text style={styles.countryName}>{props.name}</Text>
         </View>
     )
 }
 
 
 const styles = StyleSheet.create({
-    buttonContainer : {
-        alignItems: 'center'
+    buttonContainer: {
+        alignItems: 'center',
+        paddingVertical: 8,
     },
     flag: {
-        fontSize: 28,
-        color: "#FFFFFF",
-        marginBottom: 4
+        fontSize: 32,
+        marginBottom: 4,
+        color: '#ffffff',
     },
-    country: {
-        fontSize: 14,
-        color: "#2d3436",
-    
-    }
+    countryName: {
+        fontSize: 16,
+        color: '#dfe6e9',
+        fontWeight: 'bold',
+    },
 })

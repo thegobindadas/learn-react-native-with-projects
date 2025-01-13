@@ -29,9 +29,9 @@ function App(): React.JSX.Element {
 
     if (!inputValue) {
       return Snackbar.show({
-        text: "Enter Amount",
-        backgroundColor: "#f0f0f0",
-        textColor: "#000000",
+        text: 'Please enter an amount',
+        backgroundColor: '#333333',
+        textColor: '#ffffff',
         duration: Snackbar.LENGTH_SHORT,
       });
     }
@@ -46,59 +46,56 @@ function App(): React.JSX.Element {
       setTargetCurrency(targetValue.name);
     } else {
       return Snackbar.show({
-        text: "Enter Valid Amount",
-        backgroundColor: "#f0f0f0",
-        textColor: "#000000",
-        
+        text: 'Invalid amount entered',
+        backgroundColor: '#ff5252',
+        textColor: '#ffffff',
       });
     }
   }
 
 
   return (
-    <>
-      <StatusBar />
-      <View style={styles.container}>
-        <View style={styles.topContainer}>
-          <View style={styles.rupeesContainer}>
-            <Text style={styles.rupee}>₹</Text>
-            <TextInput
-              maxLength={10}
-              value={inputValue}
-              clearButtonMode='always' // only for ios
-              onChangeText={setInputValue}
-              style={styles.inputAmountField}
-              keyboardType="numeric"
-              placeholder="Enter Amount in Ruppes"
-              placeholderTextColor="#808080"
-            />
-          </View>
-          {resultValue && (
-            <Text style={styles.resultTxt}>
-              {resultValue}
-            </Text>
-          )}
-        </View>
-        <View style={styles.bottomContainer}>
-          <FlatList
-            numColumns={3}
-            data={currencyByRupee}
-            keyExtractor={(item) => item.name}
-            renderItem={({ item }) => (
-              <Pressable
-                onPress={() => buttonPressed(item)}
-                style={({ pressed }) => [
-                  styles.button,
-                  pressed && styles.selected,
-                ]}
-              >
-                <CurrencyButton {...item} />
-              </Pressable>
-            )}
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      <View style={styles.topContainer}>
+        <View style={styles.inputWrapper}>
+          <Text style={styles.rupee}>₹</Text>
+          <TextInput
+            style={styles.inputField}
+            value={inputValue}
+            onChangeText={setInputValue}
+            keyboardType="numeric"
+            placeholder="Enter Amount in Rupees"
+            placeholderTextColor="#aaa"
           />
         </View>
+        {resultValue ? (
+          <Text style={styles.resultText}>
+            {resultValue} ({targetCurrency})
+          </Text>
+        ) : (
+          <Text style={styles.infoText}>Choose a currency to convert</Text>
+        )}
       </View>
-    </>
+
+      <FlatList
+        data={currencyByRupee}
+        keyExtractor={(item) => item.name}
+        numColumns={3}
+        contentContainerStyle={styles.currencyList}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() => buttonPressed(item)}
+            style={({ pressed }) => [
+              styles.currencyButton,
+              pressed && styles.buttonPressed,
+            ]}
+          >
+            <CurrencyButton {...item} />
+          </Pressable>
+        )}
+      />
+    </SafeAreaView>
   );
 }
 
@@ -106,59 +103,60 @@ function App(): React.JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#515151',
+    backgroundColor: '#1e1e1e',
+    paddingHorizontal: 16,
   },
   topContainer: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    marginTop: 20,
   },
-  resultTxt: {
-    fontSize: 32,
-    color: '#000000',
-    fontWeight: '800',
-  },
-  rupee: {
-    marginRight: 8,
-
-    fontSize: 22,
-    color: '#000000',
-    fontWeight: '800',
-  },
-  rupeesContainer: {
+  inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  inputAmountField: {
-    height: 40,
-    width: 200,
-    padding: 8,
     borderWidth: 1,
-    borderRadius: 4,
-    backgroundColor: '#FFFFFF',
+    borderColor: '#444',
+    borderRadius: 8,
+    backgroundColor: '#333',
+    paddingHorizontal: 12,
+    marginBottom: 16,
   },
-  bottomContainer: {
-    flex: 3,
+  rupee: {
+    fontSize: 24,
+    color: '#ffffff',
+    marginRight: 8,
   },
-  button: {
+  inputField: {
     flex: 1,
-
-    margin: 12,
-    height: 60,
-
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    elevation: 2,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowColor: '#333',
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
+    height: 48,
+    color: '#ffffff',
+    fontSize: 18,
+    backgroundColor: '#333',
   },
-  selected: {
-    backgroundColor: '#ffeaa7',
+  resultText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginTop: 10,
+  },
+  infoText: {
+    fontSize: 16,
+    color: '#aaa',
+  },
+  currencyList: {
+    paddingBottom: 16,
+  },
+  currencyButton: {
+    flex: 1,
+    margin: 8,
+    paddingVertical: 12,
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: '#2d3436',
+  },
+  buttonPressed: {
+    backgroundColor: '#00cec9',
   },
 });
 
