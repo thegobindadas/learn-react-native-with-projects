@@ -14,6 +14,8 @@ import {
 import Snackbar from 'react-native-snackbar';
 import Icons from './components/Icons';
 
+
+
 function App(): JSX.Element {
   const [isCross, setIsCross] = useState<boolean>(false)
   const [gameWinner, setGameWinner] = useState<string>('')
@@ -149,6 +151,7 @@ function App(): JSX.Element {
   );
 }
 
+
 const styles = StyleSheet.create({
   playerInfo: {
     height: 56,
@@ -220,5 +223,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
+
+
 
 export default App;

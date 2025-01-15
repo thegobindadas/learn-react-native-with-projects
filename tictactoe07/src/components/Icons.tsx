@@ -3,9 +3,11 @@ import type { PropsWithChildren } from 'react'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+
 type IconsProps = PropsWithChildren<{
     name: string;
 }>
+
 
 const Icons = ({name} : IconsProps) => {
   switch (name) {
@@ -21,5 +23,7 @@ const Icons = ({name} : IconsProps) => {
 
   }
 }
+
+
 
 export default Icons
