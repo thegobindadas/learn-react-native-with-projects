@@ -11,21 +11,18 @@ import {
   View,
 } from 'react-native';
 
-import Icons from './components/Icons';
 import Snackbar from 'react-native-snackbar';
+import Icons from './components/Icons';
 
-
-function App(): React.JSX.Element {
-
-  const [isCross, setIsCross] = useState<boolean>(false);
-  const [gameWinner, setGameWinner] = useState<string>('');
-  const [gameState, setGameState] = useState(new Array(9).fill('empty', 0, 9));
-
+function App(): JSX.Element {
+  const [isCross, setIsCross] = useState<boolean>(false)
+  const [gameWinner, setGameWinner] = useState<string>('')
+  const [gameState, setGameState] = useState(new Array(9).fill('empty', 0, 9))
 
   const reloadGame = () => {
-    setIsCross(false);
-    setGameWinner('');
-    setGameState(new Array(9).fill('empty', 0, 9));
+    setIsCross(false)
+    setGameWinner('')
+    setGameState(new Array(9).fill('empty', 0, 9))
   }
 
   const checkIsWinner = () => {
@@ -82,77 +79,75 @@ function App(): React.JSX.Element {
       setGameWinner('Draw game... ⌛️');
     }
   }
-
-  const onChangeItem = (item: number) => {
-    
+  const onChangeItem = (itemNumber: number) => {
     if (gameWinner) {
       return Snackbar.show({
-        text: 'Game already finished!',
-        backgroundColor: '#333333',
-        textColor: '#FFFFFF',
-        duration: Snackbar.LENGTH_SHORT,
+        text: gameWinner,
+        backgroundColor: '#000000',
+        textColor: "#FFFFFF"
       })
     }
 
-
-    if (gameState[item] === 'empty') {
-      gameState[item] = isCross ? 'cross' : 'circle';
-      setIsCross(!isCross);
-    }else {
+    if (gameState[itemNumber] === 'empty') {
+      gameState[itemNumber] = isCross ? 'cross': 'circle'
+      setIsCross(!isCross)
+    } else {
       return Snackbar.show({
-        text: 'Position is already filled!',
-        backgroundColor: '#333333',
-        textColor: '#FFFFFF',
-        duration: Snackbar.LENGTH_SHORT,
+        text: "Position is already filled",
+        backgroundColor: "red",
+        textColor: "#FFF"
       })
     }
 
-    checkIsWinner();
+    checkIsWinner()
   }
 
-
   return (
-    <SafeAreaView>
+    <SafeAreaView >
       <StatusBar />
-
-      {
-        gameWinner ? (
-          <View style={[styles.playerInfo, styles.winnerInfo]}>
-            <Text style={styles.winnerTxt}>{gameWinner}</Text>
-          </View>
-        ) : (
-          <View
-            style={[
-              styles.playerInfo,
-              isCross ? styles.playerX : styles.playerO
-            ]}
-          >
-            <Text style={styles.gameTurnTxt}>
-              Player {isCross? 'X' : 'O'}'s Turn
-            </Text>
-          </View>
-        )
-      }
+      {gameWinner ? (
+        <View style={[styles.playerInfo, styles.winnerInfo]}>
+          <Text style={styles.winnerTxt}>{gameWinner}</Text>
+        </View>
+      ) : (
+        <View
+        style={[
+          styles.playerInfo,
+          isCross ? styles.playerX : styles.playerO
+        ]}
+        >
+          <Text style={styles.gameTurnTxt}>
+            Player {isCross? 'X' : 'O'}'s Turn
+          </Text>
+        </View>
+      )}
+      {/* Game Grid */}
       <FlatList
-        style={styles.grid}
-        numColumns={3}
-        data={gameState}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <Pressable
-            key={index}
-            style={styles.card}
-            onPress={() => onChangeItem(index)}
-            disabled={item !== 'empty'}
-          >
-            <Icons name={item} />
-          </Pressable>
-        )}
+      numColumns={3}
+      data={gameState}
+      style={styles.grid}
+      renderItem={({item, index}) => (
+        <Pressable
+        key={index}
+        style={styles.card}
+        onPress={() => onChangeItem(index)}
+        >
+          <Icons name={item} />
+        </Pressable>
+      )}
       />
+      {/* game action */}
+      <Pressable
+      style={styles.gameBtn}
+      onPress={reloadGame}
+      >
+        <Text style={styles.gameBtnText}>
+          {gameWinner ? 'Start new game' : 'Reload the game'}
+        </Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
-
 
 const styles = StyleSheet.create({
   playerInfo: {
@@ -225,7 +220,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
-
-
 
 export default App;
