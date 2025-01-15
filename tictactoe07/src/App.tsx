@@ -30,6 +30,7 @@ const WINNING_COMBINATIONS = [
 
 const App = (): JSX.Element => {
 
+  const colorScheme = useColorScheme();
   const [isCross, setIsCross] = useState<boolean>(false);
   const [gameWinner, setGameWinner] = useState<string>('');
   const [gameState, setGameState] = useState<string[]>(Array(9).fill('empty'));
@@ -85,42 +86,80 @@ const App = (): JSX.Element => {
     }
   };
 
-  
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar />
+    <SafeAreaView style={[styles.safeArea, colorScheme === 'dark' ? styles.darkBackground : styles.lightBackground]}>
+      <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
+      {gameWinner ? (
+        <View
+          style={[
+            styles.playerInfo,
+            styles.winnerInfo,
+            colorScheme === 'dark' ? styles.darkCard : styles.lightCard
+          ]}
+        >
+          <Text
+            style={[
+              styles.winnerTxt,
+              colorScheme === 'dark' ? styles.darkText : styles.lightText
+            ]}
+          >
+            {gameWinner}
+          </Text>
+        </View>
+      ) : (
+        <View
+          style={[
+            styles.playerInfo,
+            isCross ? styles.playerX : styles.playerO,
+            colorScheme === 'dark' ? styles.darkCard : styles.lightCard
+          ]}
+        >
+          <Text
+            style={[
+              styles.gameTurnTxt,
+              colorScheme === 'dark' ? styles.darkText : styles.lightText
+            ]}
+          >
+            Player {isCross ? 'X' : 'O'}'s Turn
+          </Text>
+        </View>
+      )}
 
-      <View
-        style={[
-          styles.playerInfo,
-          gameWinner ? styles.winnerInfo : isCross ? styles.playerX : styles.playerO,
-        ]}
-      >
-        <Text style={styles.gameTurnTxt}>
-          {gameWinner || `Player ${isCross ? 'X' : 'O'}'s Turn`}
-        </Text>
-      </View>
-
+      {/* Game Grid */}
       <FlatList
-        data={gameState}
         numColumns={3}
-        keyExtractor={(_, index) => index.toString()}
+        data={gameState}
+        style={styles.grid}
         renderItem={({ item, index }) => (
           <Pressable
-            style={styles.card}
+            key={index}
+            style={[styles.card, colorScheme === 'dark' ? styles.darkCard : styles.lightCard]}
             onPress={() => onChangeItem(index)}
           >
             <Icons name={item} />
           </Pressable>
         )}
-        contentContainerStyle={styles.grid}
       />
 
-      <Pressable style={styles.gameBtn} onPress={reloadGame}>
-        <Text style={styles.gameBtnText}>
-          {gameWinner ? 'Start New Game' : 'Reload Game'}
+      {/* Game Action Button */}
+      <Pressable
+        style={[
+          styles.gameBtn,
+          colorScheme === 'dark' ? styles.darkCard : styles.lightCard
+        ]}
+        onPress={reloadGame}
+      >
+        <Text
+          style={[
+            styles.gameBtnText,
+            colorScheme === 'dark' ? styles.darkText : styles.lightText
+          ]}
+        >
+          {gameWinner ? 'Start new game' : 'Reload the game'}
         </Text>
       </Pressable>
+
     </SafeAreaView>
   );
 };
@@ -132,13 +171,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 12,
     borderRadius: 4,
+    paddingVertical: 8,
+    marginVertical: 12,
+    marginHorizontal: 14,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowColor: '#333',
+    shadowOpacity: 0.2,
+    shadowRadius: 1.5,
   },
   gameTurnTxt: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#FFF',
   },
   playerX: {
     backgroundColor: '#38CC77',
@@ -147,10 +194,55 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7CD2E',
   },
   winnerInfo: {
+    borderRadius: 8,
+    backgroundColor: '#38CC77',
+    shadowOpacity: 0.1,
+  },
+  winnerTxt: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: '600',
+    textTransform: 'capitalize',
+  },
+  gameBtn: {
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 8,
+    marginHorizontal: 36,
     backgroundColor: '#8D3DAF',
   },
+  gameBtnText: {
+    fontSize: 18,
+    color: '#FFFFFF',
+    fontWeight: '500',
+  },
+  darkCard: {
+    backgroundColor: '#2C2C2C',
+    borderColor: '#444',
+    shadowColor: '#222',
+  },
+  darkText: {
+    color: '#E0E0E0',
+  },
+  lightCard: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#DDD',
+    shadowColor: '#CCC',
+  },
+  lightText: {
+    color: '#333',
+  },
+  safeArea: {
+    flex: 1,
+  },
+  darkBackground: {
+    backgroundColor: '#121212',
+  },
+  lightBackground: {
+    backgroundColor: '#FFFFFF',
+  },
   grid: {
-    marginHorizontal: 12,
+    margin: 12,
   },
   card: {
     height: 100,
@@ -159,18 +251,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#333',
-  },
-  gameBtn: {
-    padding: 12,
-    backgroundColor: '#8D3DAF',
-    marginHorizontal: 36,
-    marginTop: 20,
-    borderRadius: 8,
-  },
-  gameBtnText: {
-    fontSize: 18,
-    color: '#FFF',
-    textAlign: 'center',
   },
 });
 

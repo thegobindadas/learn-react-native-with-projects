@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 
 type IconsProps = PropsWithChildren<{
-    name: string;
+  name: string;
 }>
 
 
