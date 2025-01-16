@@ -3,6 +3,8 @@ import {
   FlatList,
   Pressable,
   SafeAreaView,
+  Vibration,
+  Animated,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -10,6 +12,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient'; 
 
 import Snackbar from 'react-native-snackbar';
 import Icons from './components/Icons';
@@ -51,12 +54,14 @@ const App = (): JSX.Element => {
         newGameState[a] === newGameState[c]
       ) {
         setGameWinner(`${newGameState[a]} won the game! 🥳`);
+        Vibration.vibrate(200); // Haptic feedback on win
         return;
       }
     }
 
     if (!newGameState.includes('empty')) {
       setGameWinner('It\'s a draw! ⌛️');
+      Vibration.vibrate(100); // Haptic feedback on draw
     }
   };
 
@@ -91,7 +96,8 @@ const App = (): JSX.Element => {
     <SafeAreaView style={[styles.safeArea, colorScheme === 'dark' ? styles.darkBackground : styles.lightBackground]}>
       <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
       {gameWinner ? (
-        <View
+        <LinearGradient
+          colors={['#8E2DE2', '#4A00E0']} // Gradient colors for winner
           style={[
             styles.playerInfo,
             styles.winnerInfo,
@@ -106,13 +112,14 @@ const App = (): JSX.Element => {
           >
             {gameWinner}
           </Text>
-        </View>
+        </LinearGradient>
       ) : (
         <View
           style={[
             styles.playerInfo,
             isCross ? styles.playerX : styles.playerO,
-            colorScheme === 'dark' ? styles.darkCard : styles.lightCard
+            colorScheme === 'dark' ? styles.darkCard : styles.lightCard,
+            isCross ? { backgroundColor: '#38CC77' } : { backgroundColor: '#b89100' },
           ]}
         >
           <Text
@@ -146,7 +153,8 @@ const App = (): JSX.Element => {
       <Pressable
         style={[
           styles.gameBtn,
-          colorScheme === 'dark' ? styles.darkCard : styles.lightCard
+          colorScheme === 'dark' ? styles.darkCard : styles.lightCard,
+          gameWinner ? { backgroundColor: "#923feb" } : { backgroundColor: "#178cb3" },
         ]}
         onPress={reloadGame}
       >
@@ -195,8 +203,9 @@ const styles = StyleSheet.create({
   },
   winnerInfo: {
     borderRadius: 8,
-    backgroundColor: '#38CC77',
     shadowOpacity: 0.1,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
   winnerTxt: {
     fontSize: 20,
