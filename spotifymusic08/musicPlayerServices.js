@@ -1,6 +1,7 @@
 import TrackPlayer, { Event, RepeatMode } from "react-native-track-player";
 
-import { playListData } from './src/constants'
+import {playListData} from './src/constants';
+
 
 export async function setupPlayer(){
     let isSetup = false;
@@ -14,6 +15,7 @@ export async function setupPlayer(){
         return isSetup;
     }
 }
+
 
 export async function addTrack(){
     await TrackPlayer.add(playListData)
@@ -35,6 +37,4 @@ export async function playbackService (){
     TrackPlayer.addEventListener(Event.RemotePrevious, () => {
         TrackPlayer.skipToPrevious()
     })
-
-    
 }
